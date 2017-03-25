@@ -172,8 +172,36 @@ class CustomPlayer:
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
 
-        # TODO: finish this function!
-        raise NotImplementedError
+        # Minimax implementation following reference of algorithm in "Artifical Intelligence 3rd ed" book, Chapter 5.
+        actions = game.get_legal_moves()
+
+        # Stop condition - reaching the depth defined or having no more legal moves possible
+        if depth <= 0 or not actions:
+            return self.score(game, self), None
+
+        action = None
+
+        if maximizing_player:
+            # Calling the max_value
+            value = float("-inf")
+            for a in actions:
+                next_state = game.forecast_move(a)
+                next_value, _ = self.minimax(next_state, depth - 1, False)  # Time to call min, only using the best value
+                if next_value > value:
+                    value = next_value
+                    action = a
+        else:
+            # Calling the min_value
+            value = float("inf")
+            for a in actions:
+                next_state = game.forecast_move(a)
+                next_value, _ = self.minimax(next_state, depth - 1, True)  # Time to call min, only using the best value
+                if next_value < value:
+                    value = next_value
+                    action = a
+
+        return value, action
+
 
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True):
         """Implement minimax search with alpha-beta pruning as described in the
@@ -216,5 +244,37 @@ class CustomPlayer:
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
 
-        # TODO: finish this function!
-        raise NotImplementedError
+        # Alpha-beta pruning following reference in "Artifical Intelligence 3rd ed" book, Chapter 5, page 170.
+        # The code is similar to minimax, except for the lines related to alpha e beta.
+        legal_moves = game.get_legal_moves()
+
+        # Stop condition - reaching the depth defined or having no more legal moves possible
+        if depth <= 0 or not legal_moves:
+            return self.score(game, self), None
+
+        action = None
+
+        if maximizing_player:
+            value = float("-inf")
+            for a in legal_moves:
+                next_state = game.forecast_move(a)
+                next_value, _ = self.alphabeta(next_state, depth - 1, alpha, beta, False)
+                alpha = max(alpha, next_value)
+                if next_value > value:
+                    value = next_value
+                    action = a
+                if alpha >= beta:
+                    break
+        else:
+            value = float("inf")
+            for a in legal_moves:
+                next_state = game.forecast_move(a)
+                next_value, _ = self.alphabeta(next_state, depth - 1, alpha, beta, True)
+                beta = min(beta, next_value)
+                if next_value < value:
+                    value = next_value
+                    action = a
+                if alpha >= beta:  # TODO: evaluate this code
+                    break
+
+        return value, action
