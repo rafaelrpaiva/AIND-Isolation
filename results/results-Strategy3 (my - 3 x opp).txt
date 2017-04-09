@@ -1,0 +1,44 @@
+RESULTS - Strategy 2: my_moves - 3 * adv_moves
+
+SUMMARY: ID = 72.14% / STU = 66.43% --> T = -5.71%
+
+
+*************************
+ Evaluating: ID_Improved 
+*************************
+
+Playing Matches:
+----------
+  Match 1: ID_Improved vs   Random    	Result: 18 to 2
+  Match 2: ID_Improved vs   MM_Null   	Result: 17 to 3
+  Match 3: ID_Improved vs   MM_Open   	Result: 12 to 8
+  Match 4: ID_Improved vs MM_Improved 	Result: 12 to 8
+  Match 5: ID_Improved vs   AB_Null   	Result: 17 to 3
+  Match 6: ID_Improved vs   AB_Open   	Result: 11 to 9
+  Match 7: ID_Improved vs AB_Improved 	Result: 14 to 6
+
+
+Results:
+----------
+ID_Improved         72.14%
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 17 to 3
+  Match 2:   Student   vs   MM_Null   	Result: 15 to 5
+  Match 3:   Student   vs   MM_Open   	Result: 11 to 9
+  Match 4:   Student   vs MM_Improved 	Result: 12 to 8
+  Match 5:   Student   vs   AB_Null   	Result: 14 to 6
+  Match 6:   Student   vs   AB_Open   	Result: 14 to 6
+  Match 7:   Student   vs AB_Improved 	Result: 10 to 10
+
+
+Results:
+----------
+Student             66.43%
+
+Process finished with exit code 0

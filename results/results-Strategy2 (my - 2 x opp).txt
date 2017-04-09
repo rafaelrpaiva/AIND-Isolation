@@ -1,0 +1,45 @@
+RESULTS - Strategy 2: my_moves - 2 * adv_moves
+
+SUMMARY: ID = 72.14% / STU = 71.43% --> T = -0.71%
+
+*************************
+ Evaluating: ID_Improved 
+*************************
+
+Playing Matches:
+----------
+C:/Rafael/Estudos&Linguas/MOOC - Udacity/003-Nanodegree Artificial Intelligence/python/AIND-Isolation/tournament.py:100: UserWarning: One or more agents lost a match this round due to timeout. The get_move() function must return before time_left() reaches 0 ms. You will need to leave some time for the function to return, and may need to increase this margin to avoid timeouts during  tournament play.
+  warnings.warn(TIMEOUT_WARNING)
+  Match 1: ID_Improved vs   Random    	Result: 18 to 2
+  Match 2: ID_Improved vs   MM_Null   	Result: 17 to 3
+  Match 3: ID_Improved vs   MM_Open   	Result: 14 to 6
+  Match 4: ID_Improved vs MM_Improved 	Result: 16 to 4
+  Match 5: ID_Improved vs   AB_Null   	Result: 13 to 7
+  Match 6: ID_Improved vs   AB_Open   	Result: 11 to 9
+  Match 7: ID_Improved vs AB_Improved 	Result: 12 to 8
+
+
+Results:
+----------
+ID_Improved         72.14%
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 18 to 2
+  Match 2:   Student   vs   MM_Null   	Result: 15 to 5
+  Match 3:   Student   vs   MM_Open   	Result: 14 to 6
+  Match 4:   Student   vs MM_Improved 	Result: 10 to 10
+  Match 5:   Student   vs   AB_Null   	Result: 15 to 5
+  Match 6:   Student   vs   AB_Open   	Result: 11 to 9
+  Match 7:   Student   vs AB_Improved 	Result: 17 to 3
+
+
+Results:
+----------
+Student             71.43%
+
+Process finished with exit code 0

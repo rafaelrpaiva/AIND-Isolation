@@ -36,9 +36,24 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
+    if game.is_loser(player):
+        return float("-inf")
 
-    # TODO: finish this function!
-    raise NotImplementedError
+    if game.is_winner(player):
+        return float("inf")
+
+    return difference_of_moves(game, player)
+
+
+def difference_of_moves(game, player):
+    """
+    Heuristic 1: simple evaluation of my moves versus the adversary moves, applying some "aggressiveness" factor.
+    The number chosen below was a result of some empirical tests, which pointed that being more aggressive presented
+    better final results.
+    """
+    my_moves = len(game.get_legal_moves(player))
+    adv_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    return float(my_moves - 2.2 * adv_moves)
 
 
 class CustomPlayer:
@@ -118,25 +133,40 @@ class CustomPlayer:
 
         self.time_left = time_left
 
-        # TODO: finish this function!
+        final_board = (-1, -1)
+        if not legal_moves:
+            return (-1, -1)
 
         # Perform any required initializations, including selecting an initial
         # move from the game board (i.e., an opening book), or returning
         # immediately if there are no legal moves
+        depth = 1 if self.iterative else self.search_depth
 
         try:
             # The search method call (alpha beta or minimax) should happen in
             # here in order to avoid timeout. The try/except block will
             # automatically catch the exception raised by the search method
             # when the timer gets close to expiring
-            pass
+            board_choice = final_board
+            while True:
+                if self.method == "minimax":
+                    _, board_choice = self.minimax(game, depth)
+
+                elif self.method == "alphabeta":
+                    _, board_choice = self.alphabeta(game, depth)
+                final_board = board_choice
+
+                if not self.iterative:
+                    break
+
+                depth += 1
 
         except Timeout:
             # Handle any actions required at timeout, if necessary
             pass
 
         # Return the best move from the last completed search iteration
-        raise NotImplementedError
+        return final_board
 
     def minimax(self, game, depth, maximizing_player=True):
         """Implement the minimax search algorithm as described in the lectures.
@@ -173,6 +203,7 @@ class CustomPlayer:
             raise Timeout()
 
         # Minimax implementation following reference of algorithm in "Artifical Intelligence 3rd ed" book, Chapter 5.
+        # pseudocode available in https://github.com/aimacode/aima-pseudocode
         actions = game.get_legal_moves()
 
         # Stop condition - reaching the depth defined or having no more legal moves possible
