@@ -1,0 +1,36 @@
+Set n.1 - Results:
+----------
+C:/Rafael/Estudos&Linguas/MOOC - Udacity/003-Nanodegree Artificial Intelligence/python/AIND-Isolation/tournament2.py:101: UserWarning: One or more agents lost a match this round due to timeout. The get_move() function must return before time_left() reaches 0 ms. You will need to leave some time for the function to return, and may need to increase this margin to avoid timeouts during  tournament play.
+  warnings.warn(TIMEOUT_WARNING)
+ID_Improved         67.14%
+Student             69.29%
+Ratio                2.14%
+
+Set n.2 - Results:
+----------
+ID_Improved         61.43%
+Student             70.00%
+Ratio                8.57%
+
+Set n.3 - Results:
+----------
+ID_Improved         75.00%
+Student             74.29%
+Ratio               -0.71%
+
+Set n.4 - Results:
+----------
+ID_Improved         59.29%
+Student             70.71%
+Ratio               11.43%
+
+Set n.5 - Results:
+----------
+ID_Improved         74.29%
+Student             66.43%
+Ratio               -7.86%
+
+YOU WIN! \o/ --> 3 - 2
+* AVERAGE Student: 70.14%
+* AVERAGE ID_Improved: 67.43%
+--- Match time: 43.04388556083043 minutes ---

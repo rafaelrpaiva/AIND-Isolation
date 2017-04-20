@@ -6,7 +6,6 @@ augment the test suite with your own test cases to further test your code.
 You must test your agent's strength against a set of agents with known
 relative strength using tournament.py and include the results in your report.
 """
-import random
 
 
 class Timeout(Exception):
@@ -42,7 +41,7 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    return difference_of_moves(game, player)
+    return privilege_center(game, player)
 
 
 def difference_of_moves(game, player):
@@ -51,9 +50,101 @@ def difference_of_moves(game, player):
     The number chosen below was a result of some empirical tests, which pointed that being more aggressive presented
     better final results.
     """
+    AGGR_RATIO = 2.2
     my_moves = len(game.get_legal_moves(player))
     adv_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(my_moves - 2.2 * adv_moves)
+    return float(my_moves - AGGR_RATIO * adv_moves)
+
+
+def final_countdown(game, player):
+    """
+    Heuristic 2: be cool in the beginning and try to be aggressive in the end of the game. Try to 
+    run this listening 'The Final Countdown'... "pararan-ran  parara-raran"... it's the final sprint. :)
+    """
+    AGGRESSIVE_START = 1.5
+    AGGRESSIVE_END = 3.2
+    FINAL_APPROACHING_BOUNDARY = 1 / 3
+
+    my_moves = len(game.get_legal_moves(player))
+    adv_moves = len(game.get_legal_moves(game.get_opponent(player)))
+
+    # We define if the end is going to the end comparing the number of blank spaces
+    if len(game.get_blank_spaces()) > (game.width * game.height) * FINAL_APPROACHING_BOUNDARY:
+        return float(my_moves - AGGRESSIVE_START * adv_moves)
+    else:
+        return float(my_moves - AGGRESSIVE_END * adv_moves)
+
+
+def privilege_center(game, player):
+    """
+    Heuristic 1: simple evaluation of my moves versus the adversary moves, applying some "aggressiveness" factor.
+    The number chosen below was a result of some empirical tests, which pointed that being more aggressive presented
+    better final results.
+        ** Modified to privilege the center of the board.
+    """
+    AGGR_RATIO = 2
+    bonus = 0.
+
+    center = (int(game.width/2), int(game.height/2))
+    r, c = center
+    directions = [(-2, -1), (-2, 1), (-1, -2), (-1, 2), (1, -2), (1, 2), (2, -1), (2, 1)]
+
+    off_center = [(r + dr, c + dc) for dr, dc in directions
+                  if 0 <= r + dr < game.height and 0 <= c + dc < game.width]
+    player_location = game.get_player_location(player)
+    if player_location == center:
+        bonus = 1.5
+    elif player_location in off_center:
+            bonus = 0.5
+    my_moves = len(game.get_legal_moves(player))
+    adv_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    return float(my_moves - AGGR_RATIO * adv_moves) + bonus
+
+
+def final_countdown_with_center(game, player):
+    """
+    Heuristic 2: be cool in the beginning and try to be aggressive in the end of the game. Try to 
+    run this listening 'The Final Countdown'... "pararan-ran  parara-raran"... it's the final sprint. :)
+       ** Modified to privilege the center.
+    """
+    AGGRESSIVE_START = 1.5
+    AGGRESSIVE_END = 3.2
+    FINAL_APPROACHING_BOUNDARY = 1 / 3
+
+    bonus = 0.
+
+    center = (int(game.width / 2), int(game.height / 2))
+    r, c = center
+    directions = [(-2, -1), (-2, 1), (-1, -2), (-1, 2), (1, -2), (1, 2), (2, -1), (2, 1)]
+
+    off_center = [(r + dr, c + dc) for dr, dc in directions
+                  if 0 <= r + dr < game.height and 0 <= c + dc < game.width]
+    player_location = game.get_player_location(player)
+    if player_location == center:
+        bonus = 2.0
+    elif player_location in off_center:
+        bonus = 0.1
+
+    my_moves = len(game.get_legal_moves(player))
+    adv_moves = len(game.get_legal_moves(game.get_opponent(player)))
+
+    # We define if the end is going to the end comparing the number of blank spaces
+    if len(game.get_blank_spaces()) > (game.width * game.height) * FINAL_APPROACHING_BOUNDARY:
+        return float(my_moves - AGGRESSIVE_START * adv_moves) + bonus
+    else:
+        return float(my_moves - AGGRESSIVE_END * adv_moves) + bonus
+
+
+def run_from_the_adversary(game, player):
+    """
+    Heuristic 3: this strategy focuses on running from the adversary assuming that, with this movement, there are more 
+     chances of legal movements and winning.
+    """
+    my_location = game.get_player_location(player)
+    adv_location = game.get_player_location(game.get_opponent(player))
+    distance = abs(my_location[0] - adv_location[0]) + abs(my_location[1] - adv_location[1])
+
+    return float(distance)
 
 
 class CustomPlayer:

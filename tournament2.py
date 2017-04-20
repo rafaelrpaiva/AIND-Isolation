@@ -22,6 +22,7 @@ initiative in the second match with agentB at (5, 2) as player 1 and agentA at
 import itertools
 import random
 import warnings
+import time
 
 from collections import namedtuple
 
@@ -33,7 +34,7 @@ from sample_players import improved_score
 from game_agent import CustomPlayer
 from game_agent import custom_score
 
-NUM_MATCHES = 100  # number of matches against each opponent
+NUM_MATCHES = 5  # number of matches against each opponent
 TIME_LIMIT = 150  # number of milliseconds before timeout
 
 TIMEOUT_WARNING = "One or more agents lost a match this round due to " + \
@@ -110,14 +111,10 @@ def play_round(agents, num_matches):
     wins = 0.
     total = 0.
 
-    print("\nPlaying Matches:")
-    print("----------")
-
     for idx, agent_2 in enumerate(agents[:-1]):
 
         counts = {agent_1.player: 0., agent_2.player: 0.}
         names = [agent_1.name, agent_2.name]
-        print("  Match {}: {!s:^11} vs {!s:^11}".format(idx + 1, *names), end=' ')
 
         # Each player takes a turn going first
         for p1, p2 in itertools.permutations((agent_1.player, agent_2.player)):
@@ -128,9 +125,6 @@ def play_round(agents, num_matches):
                 total += score_1 + score_2
 
         wins += counts[agent_1.player]
-
-        print("\tResult: {} to {}".format(int(counts[agent_1.player]),
-                                          int(counts[agent_2.player])))
 
     return 100. * wins / total
 
@@ -163,19 +157,32 @@ def main():
     test_agents = [Agent(CustomPlayer(score_fn=improved_score, **CUSTOM_ARGS), "ID_Improved"),
                    Agent(CustomPlayer(score_fn=custom_score, **CUSTOM_ARGS), "Student")]
 
-    print(DESCRIPTION)
-    for agentUT in test_agents:
-        print("")
-        print("*************************")
-        print("{:^25}".format("Evaluating: " + agentUT.name))
-        print("*************************")
+    start_time = time.time()
+    set_score = list()
+    complete_score = list()
+    our_win = 0
 
-        agents = random_agents + mm_agents + ab_agents + [agentUT]
-        win_ratio = play_round(agents, NUM_MATCHES)
-
-        print("\n\nResults:")
+    for i in range(5):
+        print("\nSet n.{} - Results:".format(i+1))
         print("----------")
-        print("{!s:<15}{:>10.2f}%".format(agentUT.name, win_ratio))
+
+        for agentUT in test_agents:
+            agents = random_agents + mm_agents + ab_agents + [agentUT]
+            win_ratio = play_round(agents, NUM_MATCHES)
+            set_score.append(win_ratio)
+
+            print("{!s:<15}{:>10.2f}%".format(agentUT.name, win_ratio))
+
+        print("{!s:<15}{:>10.2f}%".format("Ratio", (set_score[1]-set_score[0])))
+        complete_score.append(set_score[1]-set_score[0])
+        if set_score[1] >= set_score[0]:
+            our_win = our_win + 1
+        set_score.clear()
+    if our_win >= 3:
+        print("\nYOU WIN! \o/ --> {} - {}".format(our_win, 5-our_win))
+    else:
+        print("\nYOU LOSE. :( --> {} - {}".format(our_win, 5-our_win))
+    print("--- Match time: {} minutes ---".format((time.time() - start_time)/60))
 
 
 if __name__ == "__main__":
