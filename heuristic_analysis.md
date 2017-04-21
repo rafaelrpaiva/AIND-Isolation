@@ -272,6 +272,35 @@ as implemented in the heuristics named "privilege center" and "final countdown w
 in general. In both cases, the results couldn't allow which one was better, since the scores (3-2) and the averages 
 (70.14% and 70.43%) were very close.
 
+## Heuristic Chosen
+
+As defined in the project submission, the chosen heuristic was the more aggressive one, privileging the center (in the 
+code, named `"privilege_center"`). The reasons for choosing that are presented below:
+
+1. The numbers were consistently one of the bests in the heuristics. This heuristic defeated ID_Improved in several 
+simulations. Despite the difference between the heuristics can't be statistically proven (in the table above, the same 
+heuristic without ), the data presented good results for both `"privilege_center"` and `"final_countdown_with_center"`.
+
+2. Since the results were very similar between both heuristics (as a matter of fact, the difference of both is just a 
+tuning moment to using a more aggressive factor), the second criteria to decide was performance. Since 
+`"privilege_center"` was a little bit simpler than the second heuristic, in a 5-set battle it performed faster, probably
+because it didn't need to run a if/else command to choose the aggressiveness factor, nor analysing the number of blank
+spaces for that. The table below presented the time which each heuristic ran, using the same computer hardware and 
+same environment (e.g. memory available during the execution):
+
+| Heuristic             |  Match Duration (in minutes)|
+|    :-:                |              :-:            |
+|H1: Difference of Moves + center|   43.04388556083   |
+|H2: Final Countdown + center |      59.21595096588   |
+** The final performance presented more than 15 minutes of difference - although is hard to compare the exact environment
+between these two executions, similar environments provided showed that this difference is significant to keep simpler
+and choosing `"privilege_center"` - in a TV-event, you can use this difference of time to show nice advertisements. :)
+
+3. Finally, adding points in the evaluation function (adopted in both cases) if the move is next to the center tries to 
+keep our player in the central position, which gives better options to move. As we approach the corners, the L-movements 
+become more limited, and that is generally the reason to try keeping our moves in the center.
+
+
 ## Conclusion
 
 The heuristics presented here were put to proof against an adversary and the results were, in majority, consistent in 
